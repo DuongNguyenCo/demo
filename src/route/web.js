@@ -12,6 +12,7 @@ let initWebRotes = (app) => {
     res.send("backend mykitchen");
   });
 
+  
   //Product
   router.get("/api/product/get-all", productController.getAllProducts);
   router.get("/api/product/:product_id", productController.getProductById);
