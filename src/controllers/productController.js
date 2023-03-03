@@ -1,4 +1,4 @@
-import db, { sequelize } from '../models/index';
+import { sequelize } from '../models/index';
 const { QueryTypes } = require('sequelize');
 
 
@@ -17,7 +17,7 @@ let getAllProducts = async (req, res) => {
     return res.status(200).json({
         data: products
     });
-}
+};
 
 
 //GET BY ID
@@ -34,6 +34,71 @@ let getProductById = async (req, res) => {
     return res.status(200).json({
         data: product[0]
     });
+};
+
+
+//GET POPULAR
+let getPopularProducts = async (req, res) => {
+
+    const sql = `SELECT products.product_id, products.brand_id, products.category_id, product_name, size, weight,
+    material, country, price, status, description, capacity, wattage, products.url, brand_name, category_name
+    FROM brands JOIN products ON brands.brand_id = products.brand_id
+    JOIN categories ON products.category_id = categories.category_id
+    ORDER BY products.product_id ASC
+    LIMIT 4`;
+
+    const products = await sequelize.query(sql);
+
+    return res.status(200).json({
+        data: products[0]
+    });
+};
+
+
+//GET LATEST
+let getLatestProducts = async (req, res) => {
+
+    const sql = `SELECT products.product_id, products.brand_id, products.category_id, product_name, size, weight,
+    material, country, price, status, description, capacity, wattage, products.url, brand_name, category_name
+    FROM brands JOIN products ON brands.brand_id = products.brand_id
+    JOIN categories ON products.category_id = categories.category_id
+    ORDER BY products.product_id DESC
+    LIMIT 8`;
+
+    const products = await sequelize.query(sql);
+
+    return res.status(200).json({
+        data: products[0]
+    });
+};
+
+
+//GET BY CATEGORY
+let getProductsByCategory = async (req, res) => {
+
+    const sql1 = `SELECT * FROM categories WHERE category_id = ${req.params.category_id}`;
+    const category = await sequelize.query(sql1, {type: QueryTypes.SELECT});
+
+    if(category.length > 0) {
+
+        const sql2 = `SELECT products.product_id, products.brand_id, products.category_id, product_name, size, weight,
+        material, country, price, status, description, capacity, wattage, products.url, brand_name, category_name
+        FROM brands JOIN products ON brands.brand_id = products.brand_id
+        JOIN categories ON products.category_id = categories.category_id
+        WHERE categories.category_id = ${req.params.category_id}
+        ORDER BY products.product_id ASC`;
+    
+        const products = await sequelize.query(sql2, {type: QueryTypes.SELECT});
+    
+        return res.status(200).json({
+            data: products
+        });
+    }
+    else {
+        return res.status(404).json({
+            message: 'Không tìm thấy loại sản phẩm'
+        });
+    }
 }
 
 
@@ -104,7 +169,7 @@ let createProduct = async (req, res) => {
             message: "Thiếu thuộc tính"
         })
     }
-}
+};
 
 
 //UPDATE
@@ -161,7 +226,7 @@ let updateProduct = async (req, res) => {
             message: "Thiếu thuộc tính"
         })
     }
-}
+};
 
 
 //DELETE
@@ -182,13 +247,16 @@ let deleteProduct = async (req, res) => {
             message: "Không tìm thấy sản phẩm"
         });
     }
-}
+};
 
 
 module.exports = {
     getAllProducts,
     getProductById,
+    getPopularProducts,
+    getLatestProducts,
+    getProductsByCategory,
     createProduct,
     updateProduct,
     deleteProduct,
-}
+};

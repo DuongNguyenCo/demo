@@ -38,7 +38,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 initWebRotes(app);
 connet();
 
-let port = process.env.PORT || 9000;
+// let port = process.env.PORT || 9000;
+let port = 9000;
 
 app.listen(port, () => {
   console.log("backend starting server " + port);
