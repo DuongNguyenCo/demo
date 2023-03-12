@@ -49,8 +49,6 @@ let creatDiscounts = async (req, res) => {
             '${req.body.end_date}',
             '${req.body.description}'
             )`;
-      // const sql1 = `INSERT INTO discounts (title,code,percent,condition, start_date, end_date, description)
-      // VALUES ('${req.body.title}','${req.body.code}','${req.body.percent}','${req.body.condition}','${req.body.start_date}','${req.body.end_date}','${req.body.description}')`;
       console.log(sql1);
 
       await sequelize.query(sql1, {
@@ -62,57 +60,6 @@ let creatDiscounts = async (req, res) => {
     }
   }
 };
-//   let updateDiscounts = async (req, res) => {
-//     if(
-
-//         req.body.title !== undefined &&
-//         req.body.code !== undefined &&
-//         req.body.percent !== undefined &&
-//         req.body.condition !== undefined &&
-//         req.body.start_date !== undefined &&
-//         req.body.end_date !== undefined &&
-//         req.body.description !== undefined
-
-//     )
-//     {
-//         const sql1= `select * from discounts where discount_id = "${req.params.id}"`;
-//         const discount = await sequelize.query(sql1, {
-//             type: sequelize.QueryTypes.SELECT,
-//           });
-
-//         if(discount.length > 0) {
-//             const sql = `UPDATE discounts SET
-//                 title ='${req.body.title === "" ? discount[0].title: req.body.title}',
-//                 code = '${req.body.code === "" ? discount[0].code: req.body.code}',
-//                 percent = '${req.body.percent  === "" ? discount[0].percent: req.body.percent}',
-//                 condition = '${req.body.condition  === "" ? discount[0].condition: req.body.condition}',
-//                 start_date = '${req.body.start_date  === "" ? discount[0].start_date: req.body.start_date}',
-//                 end_date = '${req.body.end_date  === "" ? discount[0].end_date: req.body.end_date}',
-//                 description = '${req.body.description  === "" ? discount[0].description: req.body.description}'
-//                 WHERE discount_id = '${req.params.id}'`;
-
-//                 await sequelize.query(sql, {
-//                 type: sequelize.QueryTypes.UPDATE,
-//               });
-
-//             return res.status(200).json({
-//                 message: "discounts code updated successfully",
-
-//             })
-//         }
-//         else {
-//             return res.status(404).json({
-//                 message: "Couldn't find discount code to update"
-//             })
-//         }
-//     }
-//     else {
-//         return res.status(400).json({
-//             message: "NULL"
-//         })
-//     }
-
-// }
 let updateDiscounts = async (req, res) => {
   const sql1 = `select * from discounts where discount_id = "${req.params.id}"`;
   const discount = await sequelize.query(sql1, {

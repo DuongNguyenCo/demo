@@ -76,7 +76,7 @@ let getLatestProducts = async (req, res) => {
 //GET BY CATEGORY
 let getProductsByCategory = async (req, res) => {
 
-    const sql1 = `SELECT * FROM categories WHERE category_id = ${req.params.category_id}`;
+    const sql1 = `SELECT * FROM categories WHERE category_id = '${req.params.category_id}'`;
     const category = await sequelize.query(sql1, {type: QueryTypes.SELECT});
 
     if(category.length > 0) {
@@ -85,7 +85,7 @@ let getProductsByCategory = async (req, res) => {
         material, country, price, status, description, capacity, wattage, products.url, brand_name, category_name
         FROM brands JOIN products ON brands.brand_id = products.brand_id
         JOIN categories ON products.category_id = categories.category_id
-        WHERE categories.category_id = ${req.params.category_id}
+        WHERE categories.category_id = '${req.params.category_id}'
         ORDER BY products.product_id ASC`;
     
         const products = await sequelize.query(sql2, {type: QueryTypes.SELECT});
