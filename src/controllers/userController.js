@@ -19,7 +19,7 @@ let getUserById = async (req, res) => {
   if (data.length > 0) {
     return res.status(200).json({ data });
   } else {
-    return res.status(404).json({ result: "User not found" });
+    return res.status(200).json({ result: "User not found" });
   }
 };
 
@@ -175,10 +175,10 @@ let UpdateUser = async (req, res) => {
     if (update) {
       return res.status(200).json({ result: "Update successful" });
     } else {
-      return res.status(403).json({ result: "Update failed" });
+      return res.status(200).json({ result: "Update failed" });
     }
   } else {
-    return res.status(404).json({ result: "User does not exist" });
+    return res.status(200).json({ result: "User does not exist" });
   }
 };
 
@@ -192,7 +192,7 @@ let DeleteUser = async (req, res) => {
     await sequelize.query(sql);
     return res.status(200).json({ result: "Delete successful" });
   } else {
-    return res.status(404).json({ result: "User does not exist" });
+    return res.status(200).json({ result: "User does not exist" });
   }
 };
 
