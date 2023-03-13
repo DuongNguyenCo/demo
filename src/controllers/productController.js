@@ -101,7 +101,22 @@ let getProductsByCategory = async (req, res) => {
     }
 }
 
+let getProductsByname = async (req, res) => {
+    const sql = `SELECT products.product_id, products.brand_id, products.category_id, product_name, size, weight,
+    material, country, price, status, description, capacity, wattage, products.url, brand_name, category_name
+    FROM brands JOIN products ON brands.brand_id = products.brand_id
+    JOIN categories ON products.category_id = categories.category_id
+    WHERE product_name like '%${req.params.product_name}%'
+    ORDER BY products.product_id ASC
+    `;
+    const products = await sequelize.query(sql, {type: QueryTypes.SELECT});
 
+    return res.status(200).json({
+        data: products
+    });
+    
+    
+}
 //CREATE
 let createProduct = async (req, res) => {
     if(
@@ -256,6 +271,7 @@ module.exports = {
     getPopularProducts,
     getLatestProducts,
     getProductsByCategory,
+    getProductsByname,
     createProduct,
     updateProduct,
     deleteProduct,
