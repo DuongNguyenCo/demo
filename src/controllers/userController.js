@@ -115,8 +115,14 @@ let UpdateUser = async (req, res) => {
   });
   if (user.length > 0) {
     const sql = `UPDATE users SET ${
-      req.body.username
-        ? "user_name='" + req.body.username + "',"
+      req.body.role
+        ? "role_id='" + req.body.role + "',"
+        : user[0].role_id === null
+        ? "role_id=" + user[0].role_id + ","
+        : "role_id='" + user[0].role_id + "',"
+    }${
+      req.body.name
+        ? "user_name='" + req.body.name + "',"
         : user[0].user_name === null
         ? "user_name=" + user[0].user_name + ","
         : "user_name='" + user[0].user_name + "',"
@@ -187,10 +193,18 @@ let DeleteUser = async (req, res) => {
   const user = await sequelize.query(sql1, {
     type: sequelize.QueryTypes.SELECT,
   });
+  const sql2 = `SELECT * FROM carts WHERE user_id = '${req.params.id}'`;
+  const cart = await sequelize.query(sql2, {
+    type: sequelize.QueryTypes.SELECT,
+  });
   if (user.length > 0) {
-    const sql = `DELETE FROM users where user_id = '${req.params.id}'`;
-    await sequelize.query(sql);
-    return res.status(200).json({ result: "Delete successful" });
+    if (cart.length > 0) {
+      return res.status(201).json({ result: "User have card" });
+    } else {
+      const sql = `DELETE FROM users where user_id = '${req.params.id}'`;
+      await sequelize.query(sql);
+      return res.status(200).json({ result: "Delete successful" });
+    }
   } else {
     return res.status(200).json({ result: "User does not exist" });
   }

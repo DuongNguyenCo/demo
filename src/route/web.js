@@ -15,11 +15,13 @@ let initWebRotes = (app) => {
 
     //Product
     router.get("/api/product/get-all", productController.getAllProducts);
+    router.get("/api/product/get-active", productController.getAllActive);
     router.get("/api/product/:product_id", productController.getProductById);
     router.get("/api/product/get-by-name/:product_name", productController.getProductsByname);
     router.get("/api/get-popular", productController.getPopularProducts);
     router.get("/api/get-latest", productController.getLatestProducts);
     router.get("/api/product/get-by-category/:category_id", productController.getProductsByCategory);
+    router.get("/api/product/get-by-brand/:brand_id", productController.getProductsByBrand);
     router.post("/api/product/create", productController.createProduct);
     router.put("/api/product/update/:product_id", productController.updateProduct);
     router.delete("/api/product/delete/:product_id", productController.deleteProduct);
