@@ -63,16 +63,24 @@ let updateBrand = async (req, res) => {
 };
 
 let deleteBrand = async (req, res) => {
-  const sql1 = `SELECT * FROM brands where brand_id = '${req.params.id}'`;
-  const brand = await sequelize.query(sql1, {
+  const sql2 = `SELECT * FROM brands WHERE brand_id= '${req.params.id}'`;
+  const brand2 = await sequelize.query(sql2, {
     type: sequelize.QueryTypes.SELECT,
   });
-  if (brand.length > 0) {
-    const sql = `DELETE FROM brands WHERE brand_id = '${req.params.id}'`;
-    await sequelize.query(sql);
-    return res.status(200).json({ result: "Delete successful" });
+  if (brand2.length > 0) {
+    const sql1 = `SELECT * FROM brands join products on brands.brand_id = products.brand_id WHERE brands.brand_id= '${req.params.id}'`;
+    const brand = await sequelize.query(sql1, {
+      type: sequelize.QueryTypes.SELECT,
+    });
+    if (brand.length <= 0) {
+      const sql = `DELETE FROM brands WHERE brand_id = '${req.params.id}'`;
+      await sequelize.query(sql);
+      return res.status(200).json({ result: "Delete successful" });
+    } else {
+      return res.status(201).json({ result: "brand have product" });
+    }
   } else {
-    return res.status(404).json({ result: "brand does not exist" });
+    return res.status(202).json({ result: "brand not found" });
   }
 };
 

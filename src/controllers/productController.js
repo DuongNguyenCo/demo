@@ -81,6 +81,7 @@ let getLatestProducts = async (req, res) => {
     material, country, price, status, description, capacity, wattage, products.url, brand_name, category_name
     FROM brands JOIN products ON brands.brand_id = products.brand_id
     JOIN categories ON products.category_id = categories.category_id
+    WHERE products.status = 'Active'
     ORDER BY products.product_id DESC
     LIMIT 8`;
 
